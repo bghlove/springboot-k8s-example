@@ -10,8 +10,7 @@ stages:
       dockerfilePath: ./Dockerfile
       buildContext: .
       tag: k8sapp
-      pushRemote: true
-      registry: 127.0.0.1:34606
+      registry: index.docker.io
 - name: deploy
   steps:
   - applyYamlConfig:
