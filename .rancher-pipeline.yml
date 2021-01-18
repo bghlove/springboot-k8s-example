@@ -1,0 +1,20 @@
+stages:
+- name: build
+  steps:
+  - runScriptConfig:
+      image: wangzhenalex/maven-aliyun
+      shellScript: mvn clean package
+- name: publish
+  steps:
+  - publishImageConfig:
+      dockerfilePath: ./Dockerfile
+      buildContext: .
+      tag: k8sapp
+      pushRemote: true
+      registry: 127.0.0.1:34606
+- name: deploy
+  steps:
+  - applyYamlConfig:
+      path: ./k8s-example.yaml
+timeout: 60
+notification: {}
