@@ -9,7 +9,7 @@ stages:
   - publishImageConfig:
       dockerfilePath: ./Dockerfile
       buildContext: .
-      tag: k8sapp
+      tag: binguanghui/k8s-example
       registry: index.docker.io
 - name: deploy
   steps:
