@@ -31,7 +31,7 @@ spec:
   selector:
     app: deploy-k8s-example
     release: canary
-  clusterIP: 10.43.238.29
+  clusterIP: 10.43.238.38
   type: NodePort
   ports:
     - port: 80
