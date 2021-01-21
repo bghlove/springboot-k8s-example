@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--status表示log4j2内部日志的输出级别-->
+<!--monitorInterval：log4j2自我检测配置文件的更新,自我检测时间间隔-->
+<Configuration status="WARN" monitorInterval="1000">
+
+    <!--==============================================================变量配置==============================================================-->
+    <Properties>
+        <!-- 格式化输出：%date表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度 %msg：日志消息，%n是换行符-->
+        <!-- %logger{36} 表示 Logger 名字最长36个字符 -->
+        <property name="log_pattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] [%-5level] %l - %m%n" />
+        <!-- 定义日志存储的路径 -->
+        <property name="logFileName">dms</property>
+        <property name="basePath">D:/code/springboot-k8s-example/logs</property>
+        <property name="all_fileName">${basePath}/all/all.log</property>
+        <property name="info_fileName">${basePath}/info/info.log</property>
+        <property name="warn_fileName">${basePath}/warn/warn.log</property>
+        <property name="error_fileName">${basePath}/error/error.log</property>
+        <property name="all_filePattern">${basePath}/all/%d{yyyy-MM-dd}-%i.log.gz</property>
+        <property name="info_filePattern">${basePath}/info/%d{yyyy-MM-dd}-%i.log.gz</property>
+        <property name="warn_filePattern">${basePath}/warn/%d{yyyy-MM-dd}-%i.log.gz</property>
+        <property name="error_filePattern">${basePath}/error/%d{yyyy-MM-dd}-%i.log.gz</property>
+
+        <property name="rolling_max">1</property>
+
+        <!-- 日志默认同类型日志,多久生成一个新的日志文件,这个配置需要和filePattern结合使用;
+                如果设置为1,filePattern是%d{yyyy-MM-dd}到天的格式,则间隔一天生成一个文件
+                如果设置为12,filePattern是%d{yyyy-MM-dd-HH}到小时的格式,则间隔12小时生成一个文件 -->
+        <property name="timeInterval">1</property>
+        <!-- 日志默认同类型日志,是否对封存时间进行调制,若为true,则封存时间将以0点为边界进行调整,
+                如:现在是早上3am,interval是4,那么第一次滚动是在4am,接着是8am,12am...而不是7am -->
+        <property name="timeModulate">true</property>
+        <!-- 日志默认切割的最小单位 -->
+        <property name="every_file_size">20MB</property>
+    </Properties>
+
+    <!--==============================================================配置Appenders==============================================================-->
+    <Appenders>
+        <!--控制台输出-->
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="${log_pattern}"/>
+            <ThresholdFilter level="debug" onMatch="ACCEPT" onMismatch="DENY"/>
+        </Console>
+
+        <!--文件输出-->
+        <!--fileName:文件名 filePattern：归档文件名格式-->
+        <RollingFile name="all" fileName="${all_fileName}" filePattern="${all_filePattern}">
+            <PatternLayout pattern="${log_pattern}"/>
+            <!-- 设置同类型日志,同一文件夹下可以存放的数量,如果不设置此属性则默认存放7个文件，超过就删除 -->
+            <DefaultRolloverStrategy max="${rolling_max}" />
+            <Policies>
+                <!--一定时间生成一个文件-->
+                <TimeBasedTriggeringPolicy interval="${timeInterval}" modulate="${timeModulate}"/>
+                <!--一定大小生成一个文件-->
+                <SizeBasedTriggeringPolicy size="${every_file_size}"/>
+            </Policies>
+        </RollingFile>
+        <RollingFile name="info" fileName="${info_fileName}" filePattern="${info_filePattern}">
+            <PatternLayout pattern="${log_pattern}"/>
+            <DefaultRolloverStrategy max="${rolling_max}" />
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="${timeInterval}" modulate="${timeModulate}"/>
+                <SizeBasedTriggeringPolicy size="${every_file_size}"/>
+            </Policies>
+            <Filters>
+                <!--过滤日志只留下info级别-->
+                <!--DENY:拒绝
+                NEUTRAL:中立（继续判断下面filter）
+                ACCEPT:允许-->
+                <!--onMatch：日志级别>=level级别执行策略（上面的拒绝或者接受）-->
+                <!--onMismatch：日志级别<level级别的执行的策略（中立接受或拒绝）-->
+                <ThresholdFilter level="warn" onMatch="DENY" onMismatch="NEUTRAL" />
+                <ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY" />
+            </Filters>
+        </RollingFile>
+
+        <RollingFile name="warn" fileName="${warn_fileName}" filePattern="${warn_filePattern}">
+            <PatternLayout pattern="${log_pattern}"/>
+            <DefaultRolloverStrategy max="${rolling_max}" />
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="${timeInterval}" modulate="${timeModulate}"/>
+                <SizeBasedTriggeringPolicy size="${every_file_size}"/>
+            </Policies>
+            <Filters>
+                <ThresholdFilter level="error" onMatch="DENY" onMismatch="NEUTRAL" />
+                <ThresholdFilter level="warn" onMatch="ACCEPT" onMismatch="DENY" />
+            </Filters>
+        </RollingFile>
+
+        <RollingFile name="error" fileName="${error_fileName}" filePattern="${error_filePattern}">
+            <PatternLayout pattern="${log_pattern}"/>
+            <DefaultRolloverStrategy max="${rolling_max}" />
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="${timeInterval}" modulate="${timeModulate}"/>
+                <SizeBasedTriggeringPolicy size="${every_file_size}"/>
+            </Policies>
+            <Filters>
+                <ThresholdFilter level="fatal" onMatch="DENY" onMismatch="NEUTRAL" />
+                <ThresholdFilter level="error" onMatch="ACCEPT" onMismatch="DENY" />
+            </Filters>
+        </RollingFile>
+
+    </Appenders>
+    <!--==============================================================配置loggers==============================================================-->
+    <Loggers>
+        <Logger name="com.zll.logtest.mapper" level="debug" additivity="true" />
+        <!--additicity:true默认本身执行且root也会执行 false只会本身执行-->
+        <Logger name="com.zll.logtest" level="debug" additivity="true">
+            <!--<AppenderRef ref="Console"/>-->
+            <AppenderRef ref="info" />
+            <AppenderRef ref="warn" />
+            <AppenderRef ref="error" />
+        </Logger>
+        <!--root是在匹配不到上面的logger时才会执行（除了additivity为true的也会执行root外）-->
+        <!--root中设置的level优先级比子logger的优先级低，只有上面logger没匹配到才会执行root（除了additivity为true的也会执行root外）-->
+        <Root level="info">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="all" />
+        </Root>
+    </Loggers>
+</Configuration>

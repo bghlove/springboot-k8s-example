@@ -4,7 +4,11 @@ metadata:
   name: myapp-deploy
   namespace: default
 spec:
-  replicas: 3
+  volumes:
+    - name: html
+      persistentVolumeClaim:
+        claimName: mypvc1
+  replicas: 1
   selector:
     matchLabels:
       app: myapp
