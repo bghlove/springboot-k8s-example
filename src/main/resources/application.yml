@@ -1,0 +1,13 @@
+server:
+  port: 8080
+
+logging:
+  pattern:
+    file: "my.log.%d{yyyy-MM-dd}.log"
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n"
+  path: "./logs"
+  file:
+    max-history: 30
+    max-size: 100MB
+  level:
+  root: INFO

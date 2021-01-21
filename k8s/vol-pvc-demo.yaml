@@ -1,0 +1,42 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv001
+  labels:
+    name: pv001
+spec:
+  nfs:
+    path: /data/volumes/v1
+    server: nfs
+  accessModes: ["ReadWriteMany","ReadWriteOnce"]
+  capacity:
+    storage: 5Gi
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mypvc
+  namespace: default
+spec:
+  accessModes: ["ReadWriteMany"]
+  resources:
+    requests:
+      storage: 5Gi
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: vol-pvc
+  namespace: default
+spec:
+  volumes:	mypvc
+    - name: html
+      persistentVolumeClaim:
+        claimName: mypvc
+  containers:
+    - name: myapp
+      image: ikubernetes/myapp:v1
+      volumeMounts:
+        - name: html
+          mountPath: /usr/share/nginx/html/

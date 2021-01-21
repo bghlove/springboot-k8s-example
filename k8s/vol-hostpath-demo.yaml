@@ -1,0 +1,18 @@
+#创建存储卷，使用DirectoryOrCreate类型，node节点不存在会自动创建
+apiVersion: v1
+kind: Pod
+metadata:
+  name: vol-hostpath
+  namespace: default
+spec:
+  volumes:
+    - name: html
+      hostPath:
+        path: /data/pod/volume1/
+        type: DirectoryOrCreate
+  containers:
+    - name: myapp
+      image: ikubernetes/myapp:v1
+      volumeMounts:
+        - name: html
+          mountPath: /usr/share/nginx/html/

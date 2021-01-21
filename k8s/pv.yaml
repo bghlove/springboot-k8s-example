@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mypv
+  labels:
+    name: mypv
+spec:
+  nfs:
+    path: /data/k8s/pv1
+    server: 192.168.38.135
+  accessModes: ["ReadWriteMany","ReadWriteOnce"]
+  capacity:
+    storage: 1Gi

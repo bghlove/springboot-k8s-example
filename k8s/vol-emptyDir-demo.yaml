@@ -1,0 +1,35 @@
+#使用emptyDir，当Pod分配到Node上时，将会创建emptyDir，并且只要Node上的Pod一直运行，Volume就会一直存。当Pod（不管任何原因）从Node上被删除时，emptyDir也同时会删除，存储的数据也将永久删除。
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-vol-demo
+  namespace: default
+  labels:
+    app: myapp
+    tier: frontend
+  annotations:
+    along.com/created-by: "cluster admin"
+spec:
+  volumes:
+    - name: html
+      emptyDir: {}
+  containers:
+    - name: myapp
+      image: ikubernetes/myapp:v1
+      imagePullPolicy: IfNotPresent
+      ports:
+        - name: http
+          containerPort: 80
+      volumeMounts:
+        - name: html
+          mountPath: /usr/share/nginx/html/
+    - name: busybox
+      image: busybox:latest
+      imagePullPolicy: IfNotPresent
+      volumeMounts:
+        - name: html
+          mountPath: /data/
+      command:
+        - "/bin/sh"
+        - "-c"
+        - "while true; do echo $(date) >> /data/index.html; sleep 2; done"
