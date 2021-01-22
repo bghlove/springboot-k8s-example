@@ -10,7 +10,7 @@
         <property name="log_pattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] [%-5level] %l - %m%n" />
         <!-- 定义日志存储的路径 -->
         <property name="logFileName">dms</property>
-        <property name="basePath">D:/code/springboot-k8s-example/logs</property>
+        <property name="basePath">/usr/share/app/log</property>
         <property name="all_fileName">${basePath}/all/all.log</property>
         <property name="info_fileName">${basePath}/info/info.log</property>
         <property name="warn_fileName">${basePath}/warn/warn.log</property>
