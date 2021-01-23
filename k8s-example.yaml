@@ -42,6 +42,12 @@ spec:
         - name: log
           persistentVolumeClaim:
             claimName: mypvc1
+        - name: config
+          configMap:
+            name: configMap-k8s-example
+            items:
+              - key: logdatadir
+                path: config.properties
 ---
 apiVersion: v1
 kind: Service
