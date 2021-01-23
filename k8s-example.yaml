@@ -4,10 +4,6 @@ metadata:
   name: deploy-k8s-example
   namespace: default
 spec:
-  volumes:
-    - name: html
-      persistentVolumeClaim:
-        claimName: mypvc1
   replicas: 1
   selector:
     matchLabels:
@@ -23,12 +19,16 @@ spec:
         - name: deploy-k8s-example
           image: k8s-example:latest
           volumeMounts:
-            - name: html
+            - name: log
               mountPath: /usr/share/app/log
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
               containerPort: 8080
+      volumes:
+        - name: log
+          persistentVolumeClaim:
+            claimName: mypvc1
 ---
 apiVersion: v1
 kind: Service
