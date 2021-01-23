@@ -23,11 +23,11 @@ spec:
         release: canary
     spec:
       containers:
-      - env:
-        - name: logdatadir
-           value: "/opt/logs"
         - name: deploy-k8s-example
           image: k8s-example:latest
+          env:
+           - name: logdatadir
+             value: "/opt/logs"
           volumeMounts:
             - name: log
               mountPath: /opt/logs
