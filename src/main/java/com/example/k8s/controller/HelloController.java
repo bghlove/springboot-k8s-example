@@ -18,7 +18,7 @@ public class HelloController {
     @GetMapping("/")
     public String sayHello() {
         logger.info("hello world---->"+ DateUtil.now());
-        File file=new File("d:/logs/spring.log");
+        File file=new File("/opt/logs/spring.log");
         FileWriter fileWriter=new FileWriter(file);
         fileWriter.append("hello world---->"+ DateUtil.now());
         return "hello, world";
