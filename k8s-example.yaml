@@ -20,7 +20,7 @@ spec:
           image: k8s-example:latest
           volumeMounts:
             - name: log
-              mountPath: /usr/share/app/log
+              mountPath: /opt/logs
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
