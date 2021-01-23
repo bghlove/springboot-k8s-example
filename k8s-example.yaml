@@ -24,8 +24,8 @@ spec:
     spec:
       containers:
       - env:
-        - name: keyva
-           value: "123"
+        - name: logdatadir
+           value: "/opt/logs"
         - name: deploy-k8s-example
           image: k8s-example:latest
           volumeMounts:
