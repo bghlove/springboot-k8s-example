@@ -18,20 +18,18 @@ spec:
       containers:
         - name: deploy-k8s-example
           image: k8s-example:latest
-          env:
-            - name: logdatadir
-              value: "/opt/logs"
+          commond: ["/bin/sh","-c","cat","/etc/config/redis.properties"]
           volumeMounts:
-            - name: log
-              mountPath: /opt/logs
+            - name: config-volume
+              mountPath: /etc/config
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
               containerPort: 8080
       volumes:
-        - name: log
-          persistentVolumeClaim:
-            claimName: mypvc1
+        - name: config-volume
+          configMap:
+            name: redis-config
 ---
 apiVersion: v1
 kind: Service
