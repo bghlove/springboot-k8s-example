@@ -18,7 +18,7 @@ spec:
       containers:
         - name: deploy-k8s-example
           image: k8s-example:latest
-          command: ["/bin/sh","-c","cat","/etc/config/redis.properties"]
+          command: ["/bin/sh","-c","cat /etc/config/redis.properties"]
           volumeMounts:
             - name: config-volume
               mountPath: /etc/config
