@@ -3,7 +3,9 @@ stages:
   steps:
   - runScriptConfig:
       image: wangzhenalex/maven-aliyun
-      shellScript: mvn clean package
+      shellScript: |-
+        cd /opt/data
+        mvn clean package
 - name: publish
   steps:
   - publishImageConfig:
