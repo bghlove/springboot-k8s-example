@@ -18,7 +18,7 @@ spec:
       containers:
         - name: deploy-k8s-example
           image: k8s-example:latest
-          command: [ "/bin/sh", "-c", "env" ]
+          command: [ "/bin/sh", "-c", "echo $(JACK) $(TOM)" ]
           env:
             - name: JACK
               valueFrom:
