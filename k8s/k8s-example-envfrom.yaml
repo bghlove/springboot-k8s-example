@@ -26,10 +26,10 @@ spec:
                   name: redis-config
                   key: host
             - name: REDIS_USERNAME
-                valueFrom:
-                  configMapKeyRef:
-                    name: redis-config
-                    key: username
+              valueFrom:
+                configMapKeyRef:
+                  name: redis-config
+                  key: username
           envFrom:
             - configMapRef:
                 name: redis-config
