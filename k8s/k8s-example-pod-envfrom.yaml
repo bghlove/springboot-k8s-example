@@ -8,16 +8,13 @@ spec:
       image: busybox
       command: [ "/bin/sh", "-c", "env" ]
       env:
-        - name: DB_HOST
+        - name: JACK
           valueFrom:
             configMapKeyRef:
-              name: redis-config
-              key: host
-        - name: DB_PORT
+              name: from-code-cm
+              key: jack
+        - name: TOM
           valueFrom:
             configMapKeyRef:
-              name: redis-config
-              key: username
-      envFrom:
-        - configMapRef:
-            name: redis-config
+              name: from-code-cm
+              key: tom
