@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: testcm1-pod
+spec:
+  containers:
+    - name: testcm1
+      image: busybox
+      command: [ "/bin/sh", "-c", "env" ]
+      env:
+        - name: DB_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: redis-config
+              key: host
+        - name: DB_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: redis-config
+              key: username
+      envFrom:
+        - configMapRef:
+            name: redis-config

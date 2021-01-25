@@ -20,12 +20,12 @@ spec:
           image: k8s-example:latest
           command: [ "/bin/sh", "-c", "env" ]
           env:
-            - name: REDIS_HOST
+            - name: DB_HOST
               valueFrom:
                 configMapKeyRef:
                   name: redis-config
                   key: host
-            - name: REDIS_USERNAME
+            - name: DB_PORT
               valueFrom:
                 configMapKeyRef:
                   name: redis-config
@@ -33,7 +33,6 @@ spec:
           envFrom:
             - configMapRef:
                 name: redis-config
-
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
