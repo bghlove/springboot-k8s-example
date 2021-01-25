@@ -4,6 +4,8 @@ stages:
   - runScriptConfig:
       image: wangzhenalex/maven-aliyun
       shellScript: mvn clean package
+    env:
+      module: a1
 - name: publish
   steps:
   - publishImageConfig:
